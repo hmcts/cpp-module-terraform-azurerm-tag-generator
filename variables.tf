@@ -1,6 +1,6 @@
 variable "costcode" {
   type        = string
-  description = "Name of theDWP PRJ number (obtained from the project portfolio in TechNow)"
+  description = "Name of the costcode"
 }
 
 variable "owner" {
@@ -10,7 +10,7 @@ variable "owner" {
 
 variable "namespace" {
   type        = string
-  description = "Namespace to assign to Resource. It could be an organization name or abbreviation, e.g. 'hmcts' or 'methods'"
+  description = "Namespace to assign to Resource. It could be an organization name or abbreviation, e.g. 'cpp' or 'hmcts'"
 }
 
 variable "application" {

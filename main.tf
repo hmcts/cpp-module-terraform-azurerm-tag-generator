@@ -4,13 +4,12 @@ locals {
     regex_replace_chars = "/[^-a-zA-Z0-9]/"
     delimiter           = "-"
     replacement         = ""
-    # Lambdas have a limit of 64 (the most restrictive of the resources)
-    id_length_limit  = 50
-    id_hash_length   = 5
-    label_key_case   = "title"
-    label_value_case = "lower"
-    tag_key_case     = "title"
-    tag_value_case   = ""
+    id_length_limit     = 50
+    id_hash_length      = 5
+    label_key_case      = "title"
+    label_value_case    = "lower"
+    tag_key_case        = "title"
+    tag_value_case      = ""
     tag_keys = {
       owner        = "owner"
       costcode     = "costcode"
