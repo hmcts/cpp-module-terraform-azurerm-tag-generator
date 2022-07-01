@@ -78,4 +78,4 @@ stages:
               go mod init github.com/hmcts/cpp-module-terraform-azurerm-tag-generator
               go mod tidy
               cd tests/terratest
-              /usr/local/go/bin/go test -v -timeout 30m tags_name_generator_test.go
+              go test -v -timeout 30m tags_name_generator_test.go
