@@ -75,3 +75,18 @@ No resources.
 | <a name="output_id"></a> [id](#output\_id) | Resource ID. A name that may be used for the resource |
 | <a name="output_tags"></a> [tags](#output\_tags) | Tags as a list of key/value pairs |
 <!-- END_TF_DOCS -->
+
+## Contributing
+
+We use pre-commit hooks for validating the terraform format and maintaining the documentation automatically.
+Install it with:
+
+```shell
+$ brew install pre-commit terraform-docs
+$ pre-commit install
+```
+
+If you add a new hook make sure to run it against all files:
+```shell
+$ pre-commit run --all-files
+```
