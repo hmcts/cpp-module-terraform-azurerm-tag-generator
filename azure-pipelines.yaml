@@ -60,3 +60,22 @@ stages:
             python3 -m pip install --upgrade pip
             pip3 install pre-commit
             pre-commit run --all-files
+  - stage: terratest
+    jobs:
+    - job:
+      pool:
+        vmImage: ${{ variables.agentPool }}
+      steps:
+        - task: GoTool@0
+          displayName: 'Use Go 1.18.3'
+          inputs:
+            version: 1.18.3
+        - task: CmdLine@2
+          displayName: 'Terratest'
+          inputs:
+            targetType: 'inline'
+            script: |
+              go mod init github.com/hmcts/cpp-module-terraform-azurerm-tag-generator
+              go mod tidy
+              cd tests/terratest
+              go test -v -timeout 30m tags_name_generator_test.go
