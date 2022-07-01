@@ -67,10 +67,10 @@ stages:
         vmImage: ${{ variables.agentPool }}
       steps:
         - task: GoTool@0
-          displayName: Use Go 1.18.3
+          displayName: 'Use Go 1.18.3'
           inputs:
             version: 1.18.3
-        - task: Terratest
+        - task: CmdLine@2
           displayName: 'Terratest'
           inputs:
             targetType: 'inline'
