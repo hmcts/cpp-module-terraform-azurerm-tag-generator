@@ -1,81 +1,20 @@
-name: CPP Azure Tagging Generator
-trigger:
-  batch: true
-  branches:
-    include:
-      - master
+name: CPP Azure Application Gateway
+trigger: none
+pr:
+- main
 
-parameters:
-  - name: components
-    displayName: Component to Run
-    type: object
-    default:
-      - deployment: "backendtags"
-        environment: "dev"
-        dependsOn: "Precheck"
+resources:
+  repositories:
+  - repository: cppAzureDevOpsTemplates
+    type: github
+    name: hmcts/cpp-azure-devops-templates
+    endpoint: 'cpp-apps'
 
-  - name: location
-    displayName: Location
-    type: string
-    default: "UK South"
-    values:
-      - "UK South"
-      - "UK West"
-
-variables:
-  - name: tfversion
-    value: 1.2.3
-  - name: project
-    value: application
-  - name: timeoutInMinutes
-    value: "60"
-  - name: agentPool
-    value: "ubuntu-latest"
-  - name: build
-    value: $(Build.BuildNumber)
-  - name: isMaster
-    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
-  - name: product
-    value: "cpp-platform"
-  - name: tfInitSub
-    value: ""
-
-stages:
-  - stage: precommit
-    jobs:
-    - job: pre
-      pool:
-        vmImage: ${{ variables.agentPool }}
-      steps:
-      - task: TerraformInstaller@0
-        displayName: Terraform install
-        inputs:
-          terraformVersion: ${{ variables.tfversion }}
-      - task: CmdLine@2
-        displayName: 'Run pre-commit static analysis'
-        inputs:
-          targetType: 'inline'
-          script: |
-            curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-            python3 -m pip install --upgrade pip
-            pip3 install pre-commit
-            pre-commit run --all-files
-  - stage: terratest
-    jobs:
-    - job:
-      pool:
-        vmImage: ${{ variables.agentPool }}
-      steps:
-        - task: GoTool@0
-          displayName: 'Use Go 1.18.3'
-          inputs:
-            version: 1.18.3
-        - task: CmdLine@2
-          displayName: 'Terratest'
-          inputs:
-            targetType: 'inline'
-            script: |
-              go mod init github.com/hmcts/cpp-module-terraform-azurerm-tag-generator
-              go mod tidy
-              cd tests/terratest
-              go test -v -timeout 30m tags_name_generator_test.go
+extends:
+  template: pipelines/terratest.yaml@cppAzureDevOpsTemplates
+  parameters:
+    agentPool: "ubuntu-latest"
+    spnCredentialsVarGroup: "terratest-app-registration"
+    azureServiceConnection: "ado_nonlive_service_principal_lab"
+    terratestTimeout: "30"
+    tfversion: 1.2.3
