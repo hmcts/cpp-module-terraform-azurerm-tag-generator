@@ -1,4 +1,4 @@
-name: CPP Azure Application Gateway
+name: CPP Azure Tagging Generator
 trigger: none
 pr:
 - main
